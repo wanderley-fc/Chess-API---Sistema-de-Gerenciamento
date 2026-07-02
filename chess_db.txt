@@ -1,0 +1,33 @@
+CREATE DATABASE chess_db;
+
+CREATE TABLE jogador (
+    id SERIAL PRIMARY KEY,
+    nome VARCHAR(100) UNIQUE NOT NULL,
+    federacao CHAR(3),
+    rating INTEGER DEFAULT 1500,
+    data_nascimento DATE NOT NULL,
+    titulo_fide VARCHAR(3),
+    email VARCHAR(100) UNIQUE NOT NULL,
+    data_cadastro DATE DEFAULT CURRENT_DATE
+);
+
+CREATE TABLE partida (
+    id SERIAL PRIMARY KEY,
+    evento VARCHAR(100),
+    local_evento VARCHAR(100),
+    data_partida DATE,
+    resultado VARCHAR(7),
+    terminacao VARCHAR(30),
+    controle_tempo VARCHAR(20),
+    rodada VARCHAR(20),
+    lances TEXT
+);
+
+CREATE TABLE partida_jogador (
+    id SERIAL PRIMARY KEY,
+    partida_id INTEGER REFERENCES partida(id),
+    jogador_id INTEGER REFERENCES jogador(id),
+    cor VARCHAR(7) CHECK (cor IN ('brancas', 'pretas')),
+    UNIQUE(partida_id, jogador_id),  
+    UNIQUE(partida_id, cor)  
+);
